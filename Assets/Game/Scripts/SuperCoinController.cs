@@ -13,8 +13,11 @@ namespace Game.Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            _gameManagerScript.SetPlayerWin();
-            Destroy(gameObject);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                _gameManagerScript.SetPlayerWin();
+                Destroy(gameObject);
+            }
         }
     }
 }

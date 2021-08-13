@@ -17,8 +17,11 @@ namespace Game.Scripts
 
         private void OnTriggerEnter(Collider other)
         {
-            _coinManagerScript.AddCoinsCollected(1);
-            Destroy(gameObject);
+            if (other.gameObject.CompareTag("Player"))
+            {
+                _coinManagerScript.AddCoinsCollected(1);
+                Destroy(gameObject);
+            }
         }
 
         public void StartAnimation()
