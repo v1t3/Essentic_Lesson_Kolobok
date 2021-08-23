@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Game.Scripts
@@ -7,30 +8,26 @@ namespace Game.Scripts
     {
         private MenuManager _menuManagerScript;
 
-        private CoinController[] _coinControllers;
-
         [SerializeField] private GameObject superCoinPrefab;
 
-        private int _coinCountStart;
-        private int _coinsCollected;
+        private List<CoinController> _coinControllerList = new List<CoinController>();
 
-        private bool _isSuperCoinExist;
+        public int CoinCountStart { get; private set; }
+        public int CoinsCollected => CoinCountStart - _coinControllerList.Count;
+
+        public bool IsSuperCoinExist { get; private set; }
 
         private void Awake()
         {
             _menuManagerScript = FindObjectOfType<MenuManager>();
-            _coinControllers = FindObjectsOfType<CoinController>();
-            _coinCountStart = _coinControllers.Length;
-        }
+            _coinControllerList = FindObjectsOfType<CoinController>().ToList();
 
-        public int GetCollectedCoinsCount()
-        {
-            return _coinsCollected;
+            CoinCountStart = _coinControllerList.Count;
         }
 
         public void EnableCoins()
         {
-            foreach (var coinController in _coinControllers)
+            foreach (var coinController in _coinControllerList)
             {
                 coinController.StartAnimation();
             }
@@ -38,22 +35,41 @@ namespace Game.Scripts
 
         private void ShowSuperCoin()
         {
-            if (_isSuperCoinExist) return;
+            if (IsSuperCoinExist) return;
 
             Instantiate(superCoinPrefab, superCoinPrefab.transform.position, superCoinPrefab.transform.rotation);
-            _isSuperCoinExist = true;
+            IsSuperCoinExist = true;
         }
 
-        public void AddCoinsCollected(int value)
+        public void UpdateCoinsCount(CoinController coinController)
         {
-            _coinsCollected += value;
+            _coinControllerList.Remove(coinController);
             
-            _menuManagerScript.UpdateCoinCount();
+            _menuManagerScript.UpdateCoinCountText();
 
-            if (!_isSuperCoinExist && _coinsCollected >= _coinCountStart)
+            if (!IsSuperCoinExist && 0 == _coinControllerList.Count)
             {
                 ShowSuperCoin();
             }
+        }
+
+        public CoinController GetClosest(Vector3 point)
+        {
+            float minDistance = Mathf.Infinity;
+            CoinController closestCoin = null;
+            
+            for (int i = 0; i < _coinControllerList.Count; i++)
+            {
+                float distance = Vector3.Distance(point, _coinControllerList[i].transform.position);
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestCoin = _coinControllerList[i];
+                }
+            }
+
+            return closestCoin;
         }
     }
 }

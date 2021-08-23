@@ -41,9 +41,10 @@ namespace Game.Scripts
             loosePanel.SetActive(!loosePanel.activeSelf);
         }
 
-        public void UpdateCoinCount()
+        public void UpdateCoinCountText()
         {
-            _coinCountText.text = "Монетки: " + _coinManagerScript.GetCollectedCoinsCount();
+            _coinCountText.text = "Монетки: " + _coinManagerScript.CoinsCollected.ToString()
+                                              + "/" + _coinManagerScript.CoinCountStart.ToString();
         }
     }
 }

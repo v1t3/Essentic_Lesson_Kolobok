@@ -29,8 +29,6 @@ namespace Game.Scripts
 
         private void LateUpdate()
         {
-            if (!_gameManagerScript.isGameStarted) return;
-
             transform.position = _playerRb.transform.position;
         }
     }

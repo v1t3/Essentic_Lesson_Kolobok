@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -25,7 +24,7 @@ namespace Game.Scripts
             _rb = GetComponent<Rigidbody>();
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
             if (!_gameManagerScript.isGameStarted) return;
 
@@ -33,7 +32,7 @@ namespace Game.Scripts
             {
                 float speed = _playerVisible ? speedIsPlayerVisible : movementSpeed;
                 
-                transform.position += transform.forward * speed * Time.deltaTime;
+                _rb.MovePosition(transform.position += transform.forward * speed * Time.deltaTime);
 
                 var distanceForward = GetDistance(transform.forward, true);
 
@@ -74,8 +73,7 @@ namespace Game.Scripts
             rayPosition.y += transform.localScale.y / 2;
             Ray ray = new Ray(rayPosition, direction);
             
-            RaycastHit hit;
-            Physics.Raycast(ray, out hit, 50);
+            Physics.Raycast(ray, out RaycastHit hit, 50);
 
             // Debug.DrawLine(ray.origin, hit.point, Color.red);
             

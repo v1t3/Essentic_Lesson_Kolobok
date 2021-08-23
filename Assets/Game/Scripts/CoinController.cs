@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Game.Scripts
 {
@@ -19,7 +18,7 @@ namespace Game.Scripts
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                _coinManagerScript.AddCoinsCollected(1);
+                _coinManagerScript.UpdateCoinsCount(this);
                 Destroy(gameObject);
             }
         }

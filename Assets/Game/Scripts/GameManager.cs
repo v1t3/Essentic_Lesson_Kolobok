@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -36,6 +35,7 @@ namespace Game.Scripts
         {
             isGameStarted = true;
             _menuManagerScript.ToggleHelloPanel();
+            _menuManagerScript.UpdateCoinCountText();
             _coinManagerScript.EnableCoins();
         }
 
