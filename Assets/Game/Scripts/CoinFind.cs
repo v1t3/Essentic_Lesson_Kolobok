@@ -7,6 +7,8 @@ namespace Game.Scripts
         private GameManager _gameManagerScript;
         private CoinManager _coinManagerScript;
 
+        [SerializeField] private float rotationSpeed = 5f;
+
         private void Awake()
         {
             _gameManagerScript = FindObjectOfType<GameManager>();
@@ -22,22 +24,28 @@ namespace Game.Scripts
 
         private void FindCoin()
         {
+            GameObject target = null;
             CoinController coin = _coinManagerScript.GetClosest(transform.position);
-
+            
             if (coin)
             {
-                Vector3 lookAt = coin.gameObject.transform.position - transform.position;
-                lookAt.y = 0;
-
-                transform.rotation = Quaternion.LookRotation(lookAt);
+                target = coin.gameObject;
             } 
             else if (_coinManagerScript.IsSuperCoinExist)
             {
-                Vector3 superCoinPosition = FindObjectOfType<SuperCoinController>().transform.position;
-                Vector3 lookAt = superCoinPosition - transform.position;
+                target = FindObjectOfType<SuperCoinController>().gameObject;
+            }
+
+            if (target)
+            {
+                Vector3 lookAt = target.transform.position - transform.position;
                 lookAt.y = 0;
 
-                transform.rotation = Quaternion.LookRotation(lookAt);
+                transform.rotation = Quaternion.Lerp(
+                    transform.rotation, 
+                    Quaternion.LookRotation(lookAt), 
+                    Time.deltaTime * rotationSpeed
+                );
             }
         }
     }
