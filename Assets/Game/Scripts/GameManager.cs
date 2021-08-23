@@ -7,19 +7,21 @@ namespace Game.Scripts
     public class GameManager : MonoBehaviour
     {
         private CoinManager _coinManagerScript;
-        private MenuManager _menuManager;
+        
+        private MenuManager _menuManagerScript;
         
         public bool isGameStarted;
 
         private void Awake()
         {
             _coinManagerScript = FindObjectOfType<CoinManager>();
-            _menuManager = FindObjectOfType<MenuManager>();
+            _menuManagerScript = FindObjectOfType<MenuManager>();
         }
 
         private void Start()
         {
-            _menuManager.ShowInterface();
+            isGameStarted = false;
+            _menuManagerScript.ShowInterface();
         }
 
         private void Update()
@@ -33,7 +35,7 @@ namespace Game.Scripts
         public void StartGame()
         {
             isGameStarted = true;
-            _menuManager.ToggleHelloPanel();
+            _menuManagerScript.ToggleHelloPanel();
             _coinManagerScript.EnableCoins();
         }
 
@@ -45,13 +47,20 @@ namespace Game.Scripts
         public void StopGame()
         {
             Debug.Log("Quit");
+            isGameStarted = false;
             Application.Quit();
         }
 
         public void SetPlayerWin()
         {
             isGameStarted = false;
-            _menuManager.ToggleWinPanel();
+            _menuManagerScript.ToggleWinPanel();
+        }
+
+        public void SetPlayerLoose()
+        {
+            isGameStarted = false;
+            _menuManagerScript.ToggleLoosePanel();
         }
     }
 }

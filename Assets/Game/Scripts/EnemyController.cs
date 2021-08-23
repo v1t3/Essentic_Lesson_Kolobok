@@ -8,61 +8,109 @@ namespace Game.Scripts
 {
     public class EnemyController : MonoBehaviour
     {
-        [SerializeField] private float speed = 1;
-        [SerializeField] private float rotationSpeed = 10;
+        private GameManager _gameManagerScript;
+        private Rigidbody _rb;
 
-        private bool _moving;
+        [SerializeField] private float movementSpeed = 1;
+        [SerializeField] private float rotationSpeed = 1;
+        [SerializeField] private float speedIsPlayerVisible = 1.5f;
+
+        private bool _moving = true;
         private bool _rotate;
+        private bool _playerVisible;
 
-        private void Start()
+        private void Awake()
         {
-            _moving = true;
+            _gameManagerScript = FindObjectOfType<GameManager>();
+            _rb = GetComponent<Rigidbody>();
         }
 
         private void Update()
         {
-            // if (_moving)
-            // {
-            //     // Debug.Log("forward: " + transform.forward);
-            //     
-            //     transform.Translate(new Vector3(0,0,transform.localPosition.z) * speed * Time.deltaTime);
-            //
-            //     Ray ray = new Ray(transform.position, transform.forward);
-            //     RaycastHit hit;
-            //     Physics.Raycast(ray, out hit, 50);
-            //
-            //     if (hit.collider)
-            //     {
-            //         Debug.Log("distance: " + hit.distance);
-            //         // Debug.Log("tag: " + hit.collider.tag);
-            //         Debug.DrawLine(ray.origin, hit.point, Color.red);
-            //
-            //         if (1 > hit.distance)
-            //         {
-            //             // ChangeDirection();
-            //             _moving = false;
-            //             _rotate = true;
-            //         }
-            //     }
-            // }
-            //
-            // if (_rotate)
-            // {
-            //     // Debug.Log("rotation y: " + transform.rotation.eulerAngles.y);
-            //     if (transform.rotation.eulerAngles.y < 90)
-            //     {
-            //         transform.rotation = Quaternion.RotateTowards(
-            //             transform.rotation,
-            //             Quaternion.Euler(0, transform.rotation.eulerAngles.y + 90, 0),
-            //             Time.deltaTime * rotationSpeed
-            //         );
-            //     }
-            //     else
-            //     {
-            //         _rotate = false;
-            //         _moving = true;
-            //     }
-            // }
+            if (!_gameManagerScript.isGameStarted) return;
+
+            if (_moving)
+            {
+                float speed = _playerVisible ? speedIsPlayerVisible : movementSpeed;
+                
+                transform.position += transform.forward * speed * Time.deltaTime;
+
+                var distanceForward = GetDistance(transform.forward, true);
+
+                if (0 < distanceForward && 1 > distanceForward && !_playerVisible)
+                {
+                    _moving = false;
+                    _rotate = true;
+
+                    float distanceRight = GetDistance(transform.right);
+
+                    if (1 < distanceRight)
+                    {
+                        StartCoroutine(Rotate(transform.localRotation.eulerAngles.y + 90));
+                    }
+                    else
+                    {
+                        StartCoroutine(Rotate(transform.localRotation.eulerAngles.y - 90));
+                    }
+                }
+            }
+        }
+
+        private void OnCollisionEnter(Collision other)
+        {
+            if (!_gameManagerScript.isGameStarted) return;
+
+            if (other.gameObject.CompareTag("Player"))
+            {
+                _gameManagerScript.SetPlayerLoose();
+            }
+        }
+
+        private float GetDistance(Vector3 direction, bool checkPlayer = false)
+        {
+            float result = 0;
+
+            Vector3 rayPosition = transform.localPosition;
+            rayPosition.y += transform.localScale.y / 2;
+            Ray ray = new Ray(rayPosition, direction);
+            
+            RaycastHit hit;
+            Physics.Raycast(ray, out hit, 50);
+
+            // Debug.DrawLine(ray.origin, hit.point, Color.red);
+            
+            if (hit.collider)
+            {
+                if (checkPlayer)
+                {
+                    _playerVisible = hit.collider.CompareTag("Player");
+                }
+                
+                result = hit.distance;
+            }
+
+            return result;
+        }
+
+        private IEnumerator Rotate(float rotateAngle)
+        {
+            Quaternion lookAt = Quaternion.Euler(new Vector3(0, rotateAngle, 0));
+
+            while (_rotate && transform.localRotation != lookAt)
+            {
+                transform.localRotation = Quaternion.RotateTowards(
+                    transform.localRotation,
+                    lookAt, 
+                    rotationSpeed * 100 * Time.deltaTime
+                );
+
+                yield return new WaitForSeconds(0.01f);
+            }
+
+            _rotate = false;
+            _moving = true;
+
+            yield return null;
         }
     }
 }

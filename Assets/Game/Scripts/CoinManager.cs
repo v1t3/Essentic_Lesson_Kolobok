@@ -5,34 +5,22 @@ namespace Game.Scripts
 {
     public class CoinManager : MonoBehaviour
     {
-        private GameManager _gameManagerScript;
+        private MenuManager _menuManagerScript;
 
         private CoinController[] _coinControllers;
 
         [SerializeField] private GameObject superCoinPrefab;
 
-        [SerializeField] private int _coinCountStart;
-
-        [SerializeField] private int _coinsCollected;
+        private int _coinCountStart;
+        private int _coinsCollected;
 
         private bool _isSuperCoinExist;
 
         private void Awake()
         {
-            _gameManagerScript = FindObjectOfType<GameManager>();
+            _menuManagerScript = FindObjectOfType<MenuManager>();
             _coinControllers = FindObjectsOfType<CoinController>();
-
             _coinCountStart = _coinControllers.Length;
-        }
-
-        private void FixedUpdate()
-        {
-            if (!_gameManagerScript.isGameStarted) return;
-
-            if (!_isSuperCoinExist && _coinsCollected >= _coinCountStart)
-            {
-                ShowSuperCoin();
-            }
         }
 
         public int GetCollectedCoinsCount()
@@ -59,6 +47,13 @@ namespace Game.Scripts
         public void AddCoinsCollected(int value)
         {
             _coinsCollected += value;
+            
+            _menuManagerScript.UpdateCoinCount();
+
+            if (!_isSuperCoinExist && _coinsCollected >= _coinCountStart)
+            {
+                ShowSuperCoin();
+            }
         }
     }
 }

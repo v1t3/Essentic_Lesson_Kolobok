@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,37 +7,43 @@ namespace Game.Scripts
     {
         private CoinManager _coinManagerScript;
         
-        [SerializeField] private GameObject _helloPanel;
-        [SerializeField] private GameObject _winPanel;
-        [SerializeField] private GameObject _coinCountField;
+        [SerializeField] private GameObject helloPanel;
+        [SerializeField] private GameObject winPanel;
+        [SerializeField] private GameObject loosePanel;
+        [SerializeField] private GameObject coinCountField;
 
         private Text _coinCountText;
 
         private void Awake()
         {
             _coinManagerScript = FindObjectOfType<CoinManager>();
-            _coinCountText = _coinCountField.GetComponent<Text>();
-        }
-
-        private void FixedUpdate()
-        {
-            _coinCountText.text = "Монетки: " + _coinManagerScript.GetCollectedCoinsCount();
+            _coinCountText = coinCountField.GetComponent<Text>();
         }
 
         public void ShowInterface()
         {
-            _coinCountField.SetActive(true);
+            coinCountField.SetActive(true);
             ToggleHelloPanel();
         }
 
         public void ToggleHelloPanel()
         {
-            _helloPanel.SetActive(!_helloPanel.activeSelf);
+            helloPanel.SetActive(!helloPanel.activeSelf);
         }
 
         public void ToggleWinPanel()
         {
-            _winPanel.SetActive(!_winPanel.activeSelf);
+            winPanel.SetActive(!winPanel.activeSelf);
+        }
+
+        public void ToggleLoosePanel()
+        {
+            loosePanel.SetActive(!loosePanel.activeSelf);
+        }
+
+        public void UpdateCoinCount()
+        {
+            _coinCountText.text = "Монетки: " + _coinManagerScript.GetCollectedCoinsCount();
         }
     }
 }
