@@ -6,7 +6,7 @@ namespace Game.Scripts
     {
         private GameManager _gameManagerScript;
 
-        private GameObject _player;
+        [SerializeField] private GameObject player;
 
         private Rigidbody _playerRb;
 
@@ -15,8 +15,7 @@ namespace Game.Scripts
         private void Awake()
         {
             _gameManagerScript = FindObjectOfType<GameManager>();
-            _player = FindObjectOfType<PlayerController>().gameObject;
-            _playerRb = _player.GetComponent<Rigidbody>();
+            _playerRb = player.GetComponent<Rigidbody>();
         }
 
         private void Update()

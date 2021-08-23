@@ -43,8 +43,7 @@ namespace Game.Scripts
 
         public void UpdateCoinCountText()
         {
-            _coinCountText.text = "Монетки: " + _coinManagerScript.CoinsCollected.ToString()
-                                              + "/" + _coinManagerScript.CoinCountStart.ToString();
+            _coinCountText.text = _coinManagerScript.CoinsCollected + "/" + _coinManagerScript.CoinCountStart;
         }
     }
 }

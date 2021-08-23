@@ -32,7 +32,7 @@ namespace Game.Scripts
             {
                 float speed = _playerVisible ? speedIsPlayerVisible : movementSpeed;
                 
-                _rb.MovePosition(transform.position += transform.forward * speed * Time.deltaTime);
+                _rb.MovePosition(transform.position += transform.forward * speed * Time.fixedDeltaTime);
 
                 var distanceForward = GetDistance(transform.forward, true);
 
@@ -42,15 +42,12 @@ namespace Game.Scripts
                     _rotate = true;
 
                     float distanceRight = GetDistance(transform.right);
+                    //Округлить число до ближайшего числа кратному 90
+                    float correctedAngleY = Mathf.Round(transform.localRotation.eulerAngles.y / 90) * 90;
+                    //Направление
+                    float rotateAngle = (1 < distanceRight) ? 90 : -90;
 
-                    if (1 < distanceRight)
-                    {
-                        StartCoroutine(Rotate(transform.localRotation.eulerAngles.y + 90));
-                    }
-                    else
-                    {
-                        StartCoroutine(Rotate(transform.localRotation.eulerAngles.y - 90));
-                    }
+                    StartCoroutine(Rotate(correctedAngleY + rotateAngle));
                 }
             }
         }
