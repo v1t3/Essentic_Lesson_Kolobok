@@ -18,7 +18,9 @@ namespace Game.Scripts
         {
             if (other.gameObject.CompareTag("Player"))
             {
+                _coinManagerScript.PlayCoinPickupSound();
                 _coinManagerScript.UpdateCoinsCount(this);
+
                 Destroy(gameObject);
             }
         }

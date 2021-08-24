@@ -13,6 +13,8 @@ namespace Game.Scripts
         [SerializeField] private float movementSpeed = 1;
         [SerializeField] private float rotationSpeed = 1;
         [SerializeField] private float speedIsPlayerVisible = 1.5f;
+        
+        private AudioSource _walkAudioSource;
 
         private bool _moving = true;
         private bool _rotate;
@@ -22,6 +24,7 @@ namespace Game.Scripts
         {
             _gameManagerScript = FindObjectOfType<GameManager>();
             _rb = GetComponent<Rigidbody>();
+            _walkAudioSource = GetComponent<AudioSource>();
         }
 
         private void FixedUpdate()
@@ -31,6 +34,11 @@ namespace Game.Scripts
             if (_moving)
             {
                 Move();
+            }
+
+            if (!_walkAudioSource.isPlaying)
+            {
+                _walkAudioSource.Play();
             }
         }
 
@@ -111,6 +119,11 @@ namespace Game.Scripts
             _moving = true;
 
             yield return null;
+        }
+
+        public void StopWalkSound()
+        {
+            _walkAudioSource.Stop();
         }
     }
 }

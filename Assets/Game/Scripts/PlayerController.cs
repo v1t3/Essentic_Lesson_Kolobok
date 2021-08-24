@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 namespace Game.Scripts
@@ -10,6 +9,8 @@ namespace Game.Scripts
         private Camera _camera;
 
         private Rigidbody _playerRb;
+
+        [SerializeField] private AudioSource walkAudio;
 
         [SerializeField] private float speedNormal;
         [SerializeField] private float speedExtra;
@@ -43,6 +44,8 @@ namespace Game.Scripts
             {
                 _playerRb.velocity = _playerRb.velocity.normalized * topSpeed;
             }
+            
+            // walkAudio.volume = Mathf.Clamp01(_playerRb.velocity.magnitude / 10);
         }
     }
 }

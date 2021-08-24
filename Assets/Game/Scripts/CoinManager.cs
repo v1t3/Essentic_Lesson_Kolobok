@@ -12,6 +12,8 @@ namespace Game.Scripts
 
         private List<CoinController> _coinControllerList = new List<CoinController>();
 
+        [SerializeField] private AudioSource coinPickupAudio;
+
         public int CoinCountStart { get; private set; }
         public int CoinsCollected => CoinCountStart - _coinControllerList.Count;
 
@@ -70,6 +72,11 @@ namespace Game.Scripts
             }
 
             return closestCoin;
+        }
+
+        public void PlayCoinPickupSound()
+        {
+            coinPickupAudio.Play();
         }
     }
 }
