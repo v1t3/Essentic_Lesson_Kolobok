@@ -24,7 +24,7 @@ namespace Game.Scripts
 
         private void Update()
         {
-            if (!_gameManagerScript.isGameStarted) return;
+            if (!_gameManagerScript.IsGameStarted) return;
             
             float vertical = Input.GetAxis("Vertical");
             float horizontal = Input.GetAxis("Horizontal");

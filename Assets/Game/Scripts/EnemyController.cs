@@ -26,35 +26,40 @@ namespace Game.Scripts
 
         private void FixedUpdate()
         {
-            if (!_gameManagerScript.isGameStarted) return;
+            if (!_gameManagerScript.IsGameStarted) return;
 
             if (_moving)
             {
-                float speed = _playerVisible ? speedIsPlayerVisible : movementSpeed;
-                
-                _rb.MovePosition(transform.position += transform.forward * speed * Time.fixedDeltaTime);
+                Move();
+            }
+        }
 
-                var distanceForward = GetDistance(transform.forward, true);
+        private void Move()
+        {
+            float speed = _playerVisible ? speedIsPlayerVisible : movementSpeed;
+            
+            _rb.MovePosition(transform.position += transform.forward * speed * Time.fixedDeltaTime);
 
-                if (0 < distanceForward && 1 > distanceForward && !_playerVisible)
-                {
-                    _moving = false;
-                    _rotate = true;
+            var distanceForward = GetDistance(transform.forward, true);
 
-                    float distanceRight = GetDistance(transform.right);
-                    //Округлить число до ближайшего числа кратному 90
-                    float correctedAngleY = Mathf.Round(transform.localRotation.eulerAngles.y / 90) * 90;
-                    //Направление
-                    float rotateAngle = (1 < distanceRight) ? 90 : -90;
+            if (0 < distanceForward && 1 > distanceForward && !_playerVisible)
+            {
+                _moving = false;
+                _rotate = true;
 
-                    StartCoroutine(Rotate(correctedAngleY + rotateAngle));
-                }
+                float distanceRight = GetDistance(transform.right);
+                //Округлить число до ближайшего числа кратному 90
+                float correctedAngleY = Mathf.Round(transform.localRotation.eulerAngles.y / 90) * 90;
+                //Направление
+                float rotateAngle = (1 < distanceRight) ? 90 : -90;
+
+                StartCoroutine(Rotate(correctedAngleY + rotateAngle));
             }
         }
 
         private void OnCollisionEnter(Collision other)
         {
-            if (!_gameManagerScript.isGameStarted) return;
+            if (!_gameManagerScript.IsGameStarted) return;
 
             if (other.gameObject.CompareTag("Player"))
             {

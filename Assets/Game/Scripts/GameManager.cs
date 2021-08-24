@@ -9,7 +9,7 @@ namespace Game.Scripts
         
         private MenuManager _menuManagerScript;
         
-        public bool isGameStarted;
+        public bool IsGameStarted { get; private set; }
 
         private void Awake()
         {
@@ -19,7 +19,7 @@ namespace Game.Scripts
 
         private void Start()
         {
-            isGameStarted = false;
+            IsGameStarted = false;
             _menuManagerScript.ShowInterface();
         }
 
@@ -33,7 +33,7 @@ namespace Game.Scripts
 
         public void StartGame()
         {
-            isGameStarted = true;
+            IsGameStarted = true;
             _menuManagerScript.ToggleHelloPanel();
             _menuManagerScript.UpdateCoinCountText();
             _coinManagerScript.EnableCoins();
@@ -47,19 +47,19 @@ namespace Game.Scripts
         public void StopGame()
         {
             Debug.Log("Quit");
-            isGameStarted = false;
+            IsGameStarted = false;
             Application.Quit();
         }
 
         public void SetPlayerWin()
         {
-            isGameStarted = false;
+            IsGameStarted = false;
             _menuManagerScript.ToggleWinPanel();
         }
 
         public void SetPlayerLoose()
         {
-            isGameStarted = false;
+            IsGameStarted = false;
             _menuManagerScript.ToggleLoosePanel();
         }
     }

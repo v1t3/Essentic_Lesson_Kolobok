@@ -20,7 +20,7 @@ namespace Game.Scripts
 
         private void Update()
         {
-            if (!_gameManagerScript.isGameStarted) return;
+            if (!_gameManagerScript.IsGameStarted) return;
 
             float yRotation = Input.GetAxis("Mouse X");
             transform.Rotate(0, yRotation * rotationSpeed * Time.deltaTime, 0);

@@ -5718,6 +5718,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &1071085707 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: e7e0202a1adc05c4bb994ce13cac1d46, type: 3}
+  m_PrefabInstance: {fileID: 1591520724}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1073689891
 GameObject:
   m_ObjectHideFlags: 0
@@ -6316,7 +6321,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a800eabb3044322b36055c9b07e6ca4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  arrowRenderer: {fileID: 1071085707}
+  startColor: {r: 1, g: 0.97647065, b: 0.18039216, a: 0}
+  endColor: {r: 1, g: 0.2783019, b: 0.2783019, a: 0}
   rotationSpeed: 5
+  maxLerpDistance: 20
 --- !u!1 &1211262804
 GameObject:
   m_ObjectHideFlags: 0
@@ -9387,7 +9396,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speedNormal: 2
   speedExtra: 150
-  topSpeed: 10
+  topSpeed: 7
 --- !u!1 &2004594099
 GameObject:
   m_ObjectHideFlags: 0
@@ -9595,7 +9604,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74d6af7a636ad8140aeeeb3338e06486, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isGameStarted: 0
 --- !u!4 &2061702120
 Transform:
   m_ObjectHideFlags: 0
